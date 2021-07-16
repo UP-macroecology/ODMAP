@@ -16,7 +16,7 @@ ui <-  tagList(
     title = div(
       div(
         id = "github_logo", 
-        a(img(src="github_logo_40px.png"), href = "https://github.com/ChrKoenig/ODMAP", target="_blank")
+        a(img(src="github_logo_40px.png"), href = "https://github.com/UP-macroecology/ODMAP", target="_blank")
       ),
       "ODMAP v1.0"
     ),
@@ -46,7 +46,7 @@ ui <-  tagList(
                em(p("Please cite as follows:", style = "font-size: 18px;")),
                p("Zurell D, Franklin J, König C, Bouchet PJ, Serra-Diaz JM, Dormann CF, Elith J, Fandos Guzman G, Feng X, Guillera-Arroita G, Guisan A, Leitão PJ, 
                  Lahoz-Monfort JJ, Park DS, Peterson AT,  Rapacciuolo G, Schmatz DR, Schröder B, Thuiller W, Yates KL, Zimmermann NE, Merow C (2020) 
-                 A standard protocol for describing species distribution models. Ecography. DOI: ",
+                 A standard protocol for describing species distribution models. Ecography 43: 1261-1277. DOI: ",
                  a(href = 'https://doi.org/10.1111/ecog.04960', '10.1111/ecog.04960', target = "_blank", .noWS = "outside"), style= "font-size: 18px;")
         )),
       column(width = 2)
@@ -67,7 +67,7 @@ ui <-  tagList(
                  a(href = 'https://cran.r-project.org/web/packages/rangeModelMetadata/index.html', 'rangeModelsMetaData', target = "_blank", .noWS = "outside"),
                  " R-package to autofill your ODMAP protocol.", style = "font-size: 18px;"),
                p("Should you have any conceptual questions or feedback regarding the ODMAP protocol, or any technical questions and feedback regarding the Shiny app, please do not hesitate to visit our ", 
-                 a(href = 'https://github.com/ChrKoenig/ODMAP', 'Github repository', target = "_blank", .noWS = "outside"), 
+                 a(href = 'https://github.com/UP-macroecology/ODMAP', 'Github repository', target = "_blank", .noWS = "outside"), 
                  " or contact us directly at ", 
                  a(href = 'mailto:odmap@wsl.ch', 'odmap@wsl.ch', .noWS = "outside"), ".", style = "font-size: 18px;")
         )),
