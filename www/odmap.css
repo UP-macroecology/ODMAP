@@ -41,6 +41,10 @@ nav div ul li {
 	width: 100%;
 }
 
+.control-label{
+  font-weight:normal;
+}
+
 table.dataTable tbody tr {
 	height: 35px;
 }
