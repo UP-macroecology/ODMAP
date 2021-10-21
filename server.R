@@ -15,7 +15,7 @@ server <- function(input, output, session) {
   #                           Rendering functions for UI elements                             # 
   # ------------------------------------------------------------------------------------------#
   render_text = function(element_id, element_placeholder){
-    textAreaInput(inputId = element_id, placeholder = element_placeholder, label = NULL, height = "45px", resize = "vertical")
+    textAreaInput(inputId = element_id, label = element_placeholder, height = "45px", resize = "vertical")
   }
   
   render_authors = function(){
@@ -27,13 +27,13 @@ server <- function(input, output, session) {
   }
   
   render_objective = function(element_id, element_placeholder){
-    selectizeInput(inputId = element_id, label = NULL, multiple = F, options = list(create = T, placeholder = element_placeholder),
+    selectizeInput(inputId = element_id, label = NULL, multiple = F, options = list(create = T, placeholder = "Choose from list"),
                    choices = list("", "Inference and explanation", "Mapping and interpolation", "Forecast and transfer"))
   }
   
   render_suggestion = function(element_id, element_placeholder, suggestions){
     suggestions = sort(trimws(unlist(strsplit(suggestions, ","))))
-    selectizeInput(inputId = element_id, label = NULL, choices = suggestions, multiple = TRUE, options = list(create = T, placeholder = element_placeholder))
+    selectizeInput(inputId = element_id, label = element_placeholder, choices = suggestions, multiple = TRUE, options = list(create = T,  placeholder = "Choose from list or insert new values"))
   }
   
   render_extent = function(element_id){
@@ -41,25 +41,25 @@ server <- function(input, output, session) {
       splitLayout(
         cellWidths = c("170px",  "150px", "150px", "150px", "150px"),
         p("Spatial extent (long/lat)", style = "padding: 9px 12px"),
-        textAreaInput(inputId = paste0(element_id, "_xmin"), placeholder = "xmin", label = NULL, height = "45px", resize = "none"),
-        textAreaInput(inputId = paste0(element_id, "_xmax"), placeholder = "xmax", label = NULL, height = "45px", resize = "none"),
-        textAreaInput(inputId = paste0(element_id, "_ymin"), placeholder = "ymin", label = NULL, height = "45px", resize = "none"),
-        textAreaInput(inputId = paste0(element_id, "_ymax"), placeholder = "ymax", label = NULL, height = "45px", resize = "none")
+        textAreaInput(inputId = paste0(element_id, "_xmin"), label = "xmin", height = "45px", resize = "none"),
+        textAreaInput(inputId = paste0(element_id, "_xmax"), label = "xmax", height = "45px", resize = "none"),
+        textAreaInput(inputId = paste0(element_id, "_ymin"), label = "ymin", height = "45px", resize = "none"),
+        textAreaInput(inputId = paste0(element_id, "_ymax"), label = "ymax", height = "45px", resize = "none")
       )
     } else {
       splitLayout(
         cellWidths = c("120px",  "150px", "150px", "150px", "150px"),
         p("Spatial extent", style = "padding: 9px 12px"),
-        textAreaInput(inputId = paste0(element_id, "_xmin"), placeholder = "xmin", label = NULL, height = "45px", resize = "none"),
-        textAreaInput(inputId = paste0(element_id, "_xmax"), placeholder = "xmax", label = NULL, height = "45px", resize = "none"),
-        textAreaInput(inputId = paste0(element_id, "_ymin"), placeholder = "ymin", label = NULL, height = "45px", resize = "none"),
-        textAreaInput(inputId = paste0(element_id, "_ymax"), placeholder = "ymax", label = NULL, height = "45px", resize = "none")
+        textAreaInput(inputId = paste0(element_id, "_xmin"), label = "xmin", height = "45px", resize = "none"),
+        textAreaInput(inputId = paste0(element_id, "_xmax"), label = "xmax", height = "45px", resize = "none"),
+        textAreaInput(inputId = paste0(element_id, "_ymin"), label = "ymin", height = "45px", resize = "none"),
+        textAreaInput(inputId = paste0(element_id, "_ymax"), label = "ymax", height = "45px", resize = "none")
       )
     }
   }
   
   render_model_algorithm = function(element_id, element_placeholder){
-    selectizeInput(inputId = element_id, label = NULL, choices = model_settings$suggestions, multiple = TRUE, options = list(create = T,  placeholder = element_placeholder))
+    selectizeInput(inputId = element_id, label = element_placeholder, choices = model_settings$suggestions, multiple = TRUE, options = list(create = T,  placeholder = "Choose from list or insert new values"))
   }
   
   render_model_settings = function(){
