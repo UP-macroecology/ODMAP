@@ -15,7 +15,7 @@ Overview,Scale of Analysis,Boundary,natural
 Overview,Biodiversity data,Observation type,field survey
 Overview,Biodiversity data,Response data type,presence/absence
 Overview,Predictors,Predictor types,climatic; edaphic; topographic
-Overview,Hyptheses,Hypotheses,"Climate, soils and topography are correlated with plant distributions"
+Overview,Hypotheses,Hypotheses,"Climate, soils and topography are correlated with plant distributions"
 Overview,Assumptions,Model assumptions,"Species–environment equilibrium, Availability of all important predictors"
 Overview,Algorithms,Modelling techniques,glm; gam; CART
 Overview,Algorithms,Model complexity,"we let the data determine model complexity in CT and GAM, and used the response shape of GAMs as indication to define the complexity of GLMs"

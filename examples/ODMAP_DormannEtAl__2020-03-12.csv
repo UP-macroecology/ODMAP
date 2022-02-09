@@ -15,7 +15,7 @@ Overview,Scale of Analysis,Boundary,political
 Overview,Biodiversity data,Observation type,standardised monitoring data
 Overview,Biodiversity data,Response data type,presence/absence
 Overview,Predictors,Predictor types,climatic; edaphic; topographic; land cover
-Overview,Hyptheses,Hypotheses,"shrike abundance is strongly affected by landscape composition, requiring a mix of hedges for perching and open grassland for hunting; the species is widespread, if not abundant, in Eurasia, without obvious associations to climate"
+Overview,Hypotheses,Hypotheses,"shrike abundance is strongly affected by landscape composition, requiring a mix of hedges for perching and open grassland for hunting; the species is widespread, if not abundant, in Eurasia, without obvious associations to climate"
 Overview,Assumptions,Model assumptions,"Implicitly, we assume that sampling is homogeneous or related to distance to settlements (which is one of our predictors); for projections, we assume that the current distribution’s delimiting factors will also form the niche of the species in the future; that we have included all species-relevant predictors that are likely to change in the future"
 Overview,Algorithms,Modelling techniques,glm; gam; ann
 Overview,Algorithms,Model complexity,Non-linear and interacting predictors to allow for more realistic cause-effect representation. Model selection to reduce predictive variance; virtual species analysis and randomisation of data analysis to explore the probability of creating spurious results due to the flexible algorithms.

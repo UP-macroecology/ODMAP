@@ -20,7 +20,7 @@ server <- function(input, output, session) {
   
   render_authors = function(){
     div(
-      DTOutput("authors_table", width = "100%"),
+      dataTableOutput("authors_table", width = "100%"),
       actionButton("add_author", label = NULL, icon = icon("plus")),
       br(), br()
     )
@@ -402,7 +402,7 @@ server <- function(input, output, session) {
     filename = function(){
       author_list = authors$df$last_name
       if(length(author_list) > 2){
-        name_string = paste0(author_list[1],"EtAl_")
+        name_string = paste0(author_list[1],"_EtAl")
       } else if(length(author_list) == 2){
         name_string = paste0(author_list[1], author_list[2])
       } else if(length(author_list) == 1){
@@ -603,15 +603,15 @@ server <- function(input, output, session) {
         }
         
         # Add new dataframe to output and settings_tabset
-        local({ # Needs local evaluation because of asynchronous execution of renderDT
+        local({ # Needs local evaluation because of asynchronous execution of renderDataTable
           .new_alg = new_alg
-          output[[.new_alg]] = renderDT(model_settings[[.new_alg]], editable = T, rownames = F,
+          output[[.new_alg]] = renderDataTable(model_settings[[.new_alg]], editable = T, rownames = F,
                                         options = list(dom = "t", pageLength = 50, autoWidth = T, columnDefs = list(list(width = '50%', targets = "_all"))))
           observeEvent(input[[paste0(.new_alg, '_cell_edit')]], {
             model_settings[[.new_alg]][input[[paste0(.new_alg, '_cell_edit')]]$row, input[[paste0(.new_alg, '_cell_edit')]]$col + 1] = input[[paste0(.new_alg, '_cell_edit')]]$value
           })
         })
-        appendTab(inputId = "settings_tabset", select = T, tab = tabPanel(title = new_alg, value = new_alg, DTOutput(outputId = new_alg)))
+        appendTab(inputId = "settings_tabset", select = T, tab = tabPanel(title = new_alg, value = new_alg, dataTableOutput(outputId = new_alg)))
       }
       model_settings$settings_tabset = input$o_algorithms_1 # update name list of displayed tabs
     } else {
@@ -640,7 +640,7 @@ server <- function(input, output, session) {
   # Authors
   authors = reactiveValues(df = data.frame("first_name" = character(0),  "last_name" = character(0))) 
   
-  output$authors_table = DT::renderDT({
+  output$authors_table = DT::renderDataTable({
     if(nrow(authors$df) == 0){
       authors_dt = datatable(authors$df, escape = F, rownames = F, colnames = NULL, 
                              options = list(dom = "t", ordering = F, language = list(emptyTable = "Author list is empty"), columnDefs = list(list(className = 'dt-left', targets = "_all"))))
@@ -685,12 +685,12 @@ server <- function(input, output, session) {
   observeEvent(input$remove_author, {
     item_remove = as.integer(parse_number(input$remove_author))
     authors$df = authors$df[-item_remove,]
-    output$authors_df = renderDT(authors$df)
+    output$authors_df = renderDataTable(authors$df)
   })
   
   observeEvent(input$authors_table_cell_edit, {
     authors$df[input$authors_table_cell_edit$row, input$authors_table_cell_edit$col + 1] = input$authors_table_cell_edit$value
-    output$authors_df = renderDT(authors$df)
+    output$authors_df = renderDataTable(authors$df)
   })
   
   # -------------------------------------------

@@ -15,7 +15,7 @@ Overview,Scale of Analysis,Boundary,political
 Overview,Biodiversity data,Observation type,standardised monitoring data
 Overview,Biodiversity data,Response data type,presence/absence
 Overview,Predictors,Predictor types,climatic; topographic; vegetation structure
-Overview,Hyptheses,Hypotheses,"Based on previous studies, we tested climate, topography and vegetation structure as important environmental predictor variables for bird and tree species in Switzerland in an exploratory way."
+Overview,Hypotheses,Hypotheses,"Based on previous studies, we tested climate, topography and vegetation structure as important environmental predictor variables for bird and tree species in Switzerland in an exploratory way."
 Overview,Assumptions,Model assumptions,"We assumed that species are at pseudo-equilibrium with the environment. Also, we assumed that detection errors were negligible. Previous analyses of the Swiss breeding bird data have shown that the sampling approach ensures high species detectability of approximately 90% (Kéry & Schmid, 2006). In the forest inventory, tree individuals below a certain diameter at breast height are not recorded and we assume that this procedure does not bias the species identification."
 Overview,Algorithms,Modelling techniques,glm; gam; brt; randomForest; JSDM
 Overview,Algorithms,Model complexity,"Model settings were chosen to yield intermediately complex response surfaces. We allowed quadratic relationships in GLMs and JSDMs, and restricted GAMs, BRTs and RFs such that these would not overfit too much."
