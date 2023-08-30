@@ -497,9 +497,14 @@ server <- function(input, output, session) {
         return()
       }
       
-      UI_list[[1]] = p(paste0("File: ", input$upload$name, " (", protocol_type, " protocol, ", sum(!is.na(protocol_upload$Value)), " non-empty fields)"))
-      UI_list[[2]] = radioButtons("replace_values", "Overwrite non-empty fields with uploaded values?", choices = c("Yes", "No"), selected = "No")
-      UI_list[[3]] = actionButton(paste0(protocol_type, "_to_input"), "Copy to input form")
+      if(sum(!is.na(protocol_upload$Value))>0){
+        UI_list[[1]] = p(paste0("File: ", input$upload$name, " (", protocol_type, " protocol, ", sum(!is.na(protocol_upload$Value)), " non-empty fields)"))
+        UI_list[[2]] = radioButtons("replace_values", "Overwrite non-empty fields with uploaded values?", choices = c("Yes", "No"), selected = "No")
+        UI_list[[3]] = actionButton(paste0(protocol_type, "_to_input"), "Copy to input form")
+      } else{
+        showNotification("Please select a ODMAP or RMMS file with at least one non-empty field", duration = 5, type = "error")
+      }
+      
     }
     return(UI_list)
   })
@@ -725,44 +730,47 @@ server <- function(input, output, session) {
       filter(!is.na(Value))
     
     # 1. Prepare imported values
-    imported_values = list()
-    for(i in 1:nrow(protocol_upload)){
-      rmm_fields = c(protocol_upload$Field.1[i], protocol_upload$Field.2[i], protocol_upload$Field.3[i])
-      rmm_fields = rmm_fields[!is.na(rmm_fields)]
-      rmm_fields = paste0(rmm_fields, collapse = "$")
-      rmm_entity = protocol_upload$Entity[i]
-      
-      odmap_subset = odmap_dict[grepl(rmm_fields, str_split(odmap_dict$rmm_fields, pattern = ","), fixed = T) & grepl(rmm_entity, str_split(odmap_dict$rmm_entities, pattern = ","), fixed = T),]
-      if(nrow(odmap_subset) == 1){
-        imported_values[[odmap_subset$element_id]][[paste(rmm_fields, rmm_entity, sep = "-")]] = protocol_upload$Value[i]
-      }
+    if(nrow(protocol_upload>0)){
+        imported_values = list()
+        for(i in 1:nrow(protocol_upload)){
+          rmm_fields = c(protocol_upload$Field.1[i], protocol_upload$Field.2[i], protocol_upload$Field.3[i])
+          rmm_fields = rmm_fields[!is.na(rmm_fields)]
+          rmm_fields = paste0(rmm_fields, collapse = "$")
+          rmm_entity = protocol_upload$Entity[i]
+          
+          odmap_subset = odmap_dict[grepl(rmm_fields, str_split(odmap_dict$rmm_fields, pattern = ","), fixed = T) & grepl(rmm_entity, str_split(odmap_dict$rmm_entities, pattern = ","), fixed = T),]
+          if(nrow(odmap_subset) == 1){
+            imported_values[[odmap_subset$element_id]][[paste(rmm_fields, rmm_entity, sep = "-")]] = protocol_upload$Value[i]
+          }
+        }
+        
+        model_settings = protocol_upload %>% 
+          dplyr::filter(Field.1 == "model" & Field.2 == "algorithm") %>% 
+          group_by(Field.3) %>% 
+          summarize(settings_string = paste(paste0(Entity, " (", Value, ")"), collapse = ", "))
+        
+        if(nrow(model_settings) > 0){
+          imported_values[["m_settings_1"]] = model_settings %>% 
+            ungroup() %>% 
+            summarize(x = paste(paste0(Field.3, ": ", settings_string), collapse = "; ")) %>% 
+            pull(x)
+        }
+        
+        # 2. Update ODMAP input fields with imported values
+        for(i in 1:length(imported_values)){
+          switch(odmap_dict$element_type[which(odmap_dict$element_id == names(imported_values)[i])],
+                 text = import_rmm_to_text(element_id = names(imported_values)[i], values = imported_values[[i]]),
+                 author = import_rmm_to_authors(element_id = names(imported_values)[i], values = imported_values[[i]]),
+                 suggestion = import_suggestion(element_id = names(imported_values)[i], values = unlist(imported_values[[i]])),
+                 extent = import_rmm_to_extent(element_id = names(imported_values)[i], values = imported_values[[i]]),
+                 model_setting = import_model_settings(element_id = names(imported_values)[i], values = imported_values[[i]]))
+        }
+        
+        # Switch to "Create a protocol" 
+        reset("upload")
+        updateNavbarPage(session, "navbar", selected = "create")
+        updateTabsetPanel(session, "Tabset", selected = "Overview")
     }
-    
-    model_settings = protocol_upload %>% 
-      dplyr::filter(Field.1 == "model" & Field.2 == "algorithm") %>% 
-      group_by(Field.3) %>% 
-      summarize(settings_string = paste(paste0(Entity, " (", Value, ")"), collapse = ", "))
-    
-    if(nrow(model_settings) > 0){
-      imported_values[["m_settings_1"]] = model_settings %>% 
-        ungroup() %>% 
-        summarize(x = paste(paste0(Field.3, ": ", settings_string), collapse = "; ")) %>% 
-        pull(x)
-    }
-    
-    # 2. Update ODMAP input fields with imported values
-    for(i in 1:length(imported_values)){
-      switch(odmap_dict$element_type[which(odmap_dict$element_id == names(imported_values)[i])],
-             text = import_rmm_to_text(element_id = names(imported_values)[i], values = imported_values[[i]]),
-             author = import_rmm_to_authors(element_id = names(imported_values)[i], values = imported_values[[i]]),
-             suggestion = import_suggestion(element_id = names(imported_values)[i], values = imported_values[[i]]),
-             extent = import_rmm_to_extent(element_id = names(imported_values)[i], values = imported_values[[i]]),
-             model_setting = import_model_settings(element_id = names(imported_values)[i], values = imported_values[[i]]))
-    }
-    
-    # Switch to "Create a protocol" 
-    reset("upload")
-    updateNavbarPage(session, "navbar", selected = "create")
-    updateTabsetPanel(session, "Tabset", selected = "Overview")
+
   })
 }
