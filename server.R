@@ -257,7 +257,7 @@ server <- function(input, output, session) {
   
   import_rmm_to_authors = function(element_id, values){
     if(nrow(authors$df) == 0 | input[["replace_values"]] == "Yes"){
-      names_split = unlist(strsplit(values, split = " and "))
+      names_split = unlist(strsplit(values[[1]], split = " and "))
       names_split = strsplit(names_split, split = ", ")
       authors$df = authors$df[0,] # Delete previous entries
       for(i in 1:length(names_split)){
@@ -732,7 +732,7 @@ server <- function(input, output, session) {
     # 1. Prepare imported values
     if(nrow(protocol_upload>0)){
         imported_values = list()
-        for(i in 1:nrow(protocol_upload)){
+        for(i in 1:nrow(protocol_upload)){ ## ignore first line?
           rmm_fields = c(protocol_upload$Field.1[i], protocol_upload$Field.2[i], protocol_upload$Field.3[i])
           rmm_fields = rmm_fields[!is.na(rmm_fields)]
           rmm_fields = paste0(rmm_fields, collapse = "$")

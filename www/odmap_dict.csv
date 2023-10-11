@@ -1,5 +1,5 @@
 running_number,section,section_id,subsection,subsection_id,element,element_id,element_placeholder,element_type,suggestions,optional,inference,prediction,projection,rmm_fields,rmm_entities,rmm_family,homology_odmap_rmm
-1,Overview,o,Authorship,o_authorship,Study title,o_authorship_1,Study title,text,,0,1,1,1,,,,
+1,Overview,o,Authorship,o_authorship,Study title,o_authorship_1,Study title,text,,0,1,1,1,authorship,rmmName,,
 2,Overview,o,Authorship,o_authorship,Author names,o_authorship_2,Author names,author,,0,1,1,1,authorship,names,base,1
 3,Overview,o,Authorship,o_authorship,Contact ,o_authorship_3,Contact email address,text,,0,1,1,1,authorship,contact,base,1
 4,Overview,o,Authorship,o_authorship,Study link,o_authorship_4,"Link to study (DOI, web address)",text,,0,1,1,1,,,,
