@@ -268,11 +268,11 @@ server <- function(input, output, session) {
   }
   
   import_rmm_to_extent = function(element_id, values){
-    values = trimws(unlist(strsplit(values, ";")))
+    values = trimws(unlist(strsplit(values[[1]], ";")))
     for(i in 1:length(values)){
       values_split = unlist(strsplit(values[i], ": "))
       if(input[[paste0(element_id, "_", values_split[1])]] == "" | input[["replace_values"]] == "Yes"){
-        updateTextAreaInput(session = session, inputId = paste0(element_id, "_", values_split[1]), value = paste(values_split[2]))
+        updateTextAreaInput(session = session, inputId = paste0(element_id, "_", values_split[1]), value = as.numeric(values_split[2]))
       }
     }
   }
@@ -468,7 +468,7 @@ server <- function(input, output, session) {
       # Obtain file extension
       file_type = gsub( "(^.*)(\\.[A-z]*$)", replacement = "\\2", input$upload$datapath)
       if(!file_type %in% c(".csv", ".RDS")){
-        showNotification("Please select a provide a .csv (ODMAP, RMMS) or .RDS file (RMMS).", duration = 3, type = "error")
+        showNotification("Please select and provide a .csv (ODMAP, RMMS) or .RDS file (RMMS).", duration = 3, type = "error")
         reset("upload")
         return()
       }
